@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int A[10];
+int top = -1;
+
+int isFull()
+{
+    if(top == 10)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int isEmpty()
+{
+    if(top == -1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void push(int val)
+{
+    if(isFull())
+    {
+        printf("Stack overflow!! Cannot push element into the stack.");
+    }
+    else
+    {
+        top=top+1;
+        A[top]=val;
+    }
+}
+
+void pop()
+{
+    if(isEmpty())
+    {
+        printf("Stack underflow!! Cannot pop element out of the stack.");
+    }
+    else
+    {
+        printf("Value: %d is removed from the stack",A[top]);
+        top = top - 1;
+    }
+}
+
+
+int main()
+{
+    int value,choice;
+    while(choice!=4)
+    {
+        printf("Please select from the following options: 1.push, 2.pop, 3.display, 4.exit\n");
+        printf("Enter your choice( either 1,2,3 or 4):");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: printf("Please enter the value you want to push:  ");
+                    scanf("%d",&value);
+                    push(value);
+                    break;
+            case 2: pop();
+                    break;
+            case 3: for(int i = top; i>=0; i--)
+                    {
+                       printf("%d\n",A[i]);
+                    }
+                    break;
+            case 4: exit(0);
+            default: printf("Wrong selection, please try again\n");
+                    
+        }
+    }
+
+    return 0;
+}
