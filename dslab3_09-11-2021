@@ -1,5 +1,5 @@
 // Data Structures
-// Implementation of Queue using Array. 
+// Implementation of a Queue using Array. 
 
 #include <stdio.h>
 #include <stdlib.h>
