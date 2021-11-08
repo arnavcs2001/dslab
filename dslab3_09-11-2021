@@ -1,0 +1,91 @@
+// Data Structures
+// Implementation of Queue using Array. 
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int isEmpty(int *front,int *rear)
+{
+    if(*front == -1 || *front > *rear)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+ 
+int isFull(int *rear)
+{
+    if(*rear == 99)
+    {
+        return 1;
+    }
+    else
+    {    
+        return 0;
+    }    
+}
+ 
+void enqueue(int A[],int *front,int *rear,int val)
+{
+    if(isFull(rear))
+    {
+        printf("This Queue is full\n");
+    }
+    else
+    {
+        if(*front==-1)
+        {
+            *front = *front + 1;
+        }
+        *rear = *rear + 1;
+        A[*rear] = val; 
+    }
+}
+ 
+void dequeue(int A[],int *front,int *rear)
+{
+    if(isEmpty(front,rear))
+    {
+        printf("This Queue is empty\n");
+    }
+    else
+    {
+        printf("Deleted element is: %d\n",A[*front]);
+        *front = *front + 1;
+    }
+}
+
+int main()
+{
+    int A[100];
+    int front,rear;
+    front = rear = -1;
+    
+    int choice,value;
+    while(choice != 4)
+    {
+        printf("Please enter your choice (1.Enqueue 2.Dequeue 3.Display 4.Exit): ");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: printf("Please enter the value you want to insert: ");
+                    scanf("%d",&value);
+                    enqueue(A,&front,&rear,value);
+                    break;
+            case 2: dequeue(A,&front,&rear);
+                    break; 
+            case 3: for(int i= front; i<=rear; i++)
+                    {
+                        printf("%d\n",A[i]);
+                    }
+                    break;
+            case 4: exit(0);
+            default: printf("Invalid choice!!");
+        }
+    }
+    
+    return 0;
+}
