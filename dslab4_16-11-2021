@@ -1,0 +1,98 @@
+// Data Structures
+// Implementation of Circular Queue using Array. 
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int isEmpty(int *front,int *rear)
+{
+    if(*front == -1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+ 
+int isFull(int *front,int *rear)
+{
+    if((*front == *rear + 1) || ((*front == 0) && (*rear == 3)))
+    {
+        return 1;
+    }
+    else
+    {    
+        return 0;
+    }    
+}
+ 
+void enqueue(int A[],int *front,int *rear,int val)
+{
+    if(isFull(front,rear))
+    {
+        printf("This Queue is full\n");
+    }
+    else
+    {
+        if(*front == -1)
+        {
+            *front = *front + 1;
+        }
+        *rear = (*rear + 1) % 4;
+        A[*rear] = val; 
+    }
+}
+ 
+void dequeue(int A[],int *front,int *rear)
+{
+    if(isEmpty(front,rear))
+    {
+        printf("This Queue is empty\n");
+    }
+    else
+    {
+        printf("Deleted element is: %d\n",A[*front]);
+        if(*front == *rear)
+        {
+            *front = *rear = -1;  // Queue has only one element so we reset the queue after dequeing.
+        }
+        else
+        {
+            *front = (*front + 1)%4;
+        }
+    }
+}
+
+int main()
+{
+    int A[4];
+    int front,rear;
+    front = rear = -1;
+    
+    int choice,value;
+    while(choice != 4)
+    {
+        printf("Please enter your choice (1.Enqueue 2.Dequeue 3.Display 4.Exit): ");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: printf("Please enter the value you want to insert: ");
+                    scanf("%d",&value);
+                    enqueue(A,&front,&rear,value);
+                    break;
+            case 2: dequeue(A,&front,&rear);
+                    break; 
+            case 3: for(int i= front; i<=rear; i = (i+1)%100)
+                    {
+                        printf("%d\n",A[i]);
+                    }
+                    break;
+            case 4: exit(0);
+            default: printf("Invalid choice!!");
+        }
+    }
+    
+    return 0;
+}
