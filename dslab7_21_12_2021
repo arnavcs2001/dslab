@@ -1,0 +1,142 @@
+// Linked list creation and deletion
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+
+struct node *head;
+
+void begin_insert()
+{
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    int val;
+    if(ptr == NULL)
+    {
+        printf("Overflow\n");
+    }
+    else
+    {
+       printf("Enter the value you want to insert: ");
+       scanf("%d",&val);
+       ptr -> data = val;
+       ptr -> next = head;
+       head = ptr;
+       printf("Node inserted\n"); 
+    }
+}
+
+void begin_delete()
+{
+    struct node *ptr;
+    if(head == NULL)
+    {
+        printf("List is empty\n");
+    }
+    else
+    {
+        ptr = head;
+        head = ptr -> next;
+        free(ptr);
+        printf("Node deleted from beginning\n");
+    }
+}
+
+void last_delete()
+{
+    struct node *ptr,*ptr1;
+    if(head == NULL)
+    {
+        printf("List is empty\n");
+    }
+    else if(head -> next == NULL)
+    {
+        head = NULL;
+        free(head);
+        printf("The only node of the list deleted\n");
+    }
+    else
+    {
+        ptr = head;
+        while(ptr->next!=NULL)
+        {
+            ptr1 = ptr;
+            ptr = ptr -> next;
+        }
+        ptr1->next = NULL;
+        free(ptr);
+        printf("Last node deleted ");
+    }
+} 
+
+void random_delete()
+{
+    struct node *ptr,*ptr1;
+    int loc,i;
+    printf("Enter location after which you want to perform deletion:\n");
+    scanf("%d",&loc);
+    ptr = head;
+    for(i=0;i<loc;i++)
+    {
+        ptr1 = ptr;
+        ptr = ptr->next;
+        if(ptr == NULL)
+        {
+            printf("Nothing to delete \n");
+            return;
+        }
+        ptr1 -> next = ptr -> next;
+        free(ptr);
+        printf("%d Node deleted ",loc + 1);
+    } 
+}
+
+void display()
+{
+    struct node *ptr;
+    ptr = head;
+    if(ptr==NULL)
+    {
+        printf("Nothing to display\n");
+    }
+    else
+    {
+        printf("Printing values: ");
+        while(ptr!=NULL)
+        {
+            printf("%d ",ptr->data);
+            ptr = ptr-> next;
+        }
+    }
+}
+
+int main()
+{
+    int choice;
+    while(choice!=6)
+    {
+        printf("Please enter your choice: 1.insert at beggining\n2.delete from first\n3.delete from last\n4.delete after a specific node\n5.display\n6.exit\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: begin_insert();
+                    break;
+            case 2: begin_delete();
+                    break;
+            case 3: last_delete();
+                    break;
+            case 4: random_delete();
+                    break;
+            case 5: display();
+                    break;
+            case 6: exit(0);
+                    break;
+            default: printf("please enter a valid input!!!\n");
+        }
+    }
+	return 0;
+}
