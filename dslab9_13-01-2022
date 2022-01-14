@@ -1,0 +1,367 @@
+// Data Structures
+// Implementation of doubly linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node   
+{  
+    struct node *prev;
+    int data;  
+    struct node *next;   
+};  
+
+struct node *beginsert(struct node *head)  
+{  
+    struct node *ptr = (struct node *) malloc(sizeof(struct node));   
+    int item;   
+    printf("\nEnter value\n");    
+    scanf("%d",&item);
+    ptr->data = item;  
+    if(head == NULL)  
+    {  
+        ptr->next = NULL;
+        ptr->prev = NULL;
+        head = ptr;
+        printf("\nNode inserted\n");    
+    }  
+    else  
+    {  
+        ptr->prev = NULL;   
+        ptr->next = head;  
+        head->prev = ptr; 
+        head = ptr;
+        printf("\nNode inserted\n");  
+    }  
+    return head;
+}
+
+struct node *lastinsert(struct node *head)  
+{  
+    struct node *ptr,*temp;  
+    int item;     
+    ptr = (struct node*)malloc(sizeof(struct node)); 
+    printf("\nEnter value\n");    
+    scanf("%d",&item);
+    ptr->data = item;       
+    if(head == NULL)  
+    {  
+        ptr->next = NULL;
+        ptr->prev = NULL;
+        head = ptr;
+        printf("\nNode inserted\n");    
+    }  
+    else  
+    {  
+       temp = head;  
+       while (temp -> next != NULL)  
+       {  
+           temp = temp -> next;  
+       }  
+       temp->next = ptr;  
+       ptr->prev = temp;
+       ptr->next = NULL;  
+       printf("\nNode inserted\n");  
+    }
+    return head;
+}  
+
+struct node *randominsert(struct node *head)  
+{  
+    int i,loc,item;   
+    struct node *ptr = NULL, *temp, *temp2 = NULL;  
+    ptr = (struct node *) malloc (sizeof(struct node));  
+
+    printf("\nEnter element value:");  
+    scanf("%d",&item);  
+    ptr->data = item;  
+    printf("\nEnter the location after which you want to insert: ");  
+    scanf("%d",&loc);  
+    temp=head;  
+    for(i=0;i<loc;i++)  
+    {  
+        temp = temp->next;  
+        if(temp == NULL)  
+        {  
+            printf("\nCan't insert\n");  
+            return head;  
+        }  
+    } 
+    temp2 = temp -> next; 
+    temp->next = ptr;
+    temp2 -> prev = ptr;
+    ptr -> next = temp2;
+    ptr->prev = temp;
+    
+    printf("\nNode inserted\n"); 
+    return head;
+}  
+
+struct node *randominsert1(struct node *head)  
+{  
+    int i1,loc1,item1;   
+    struct node *ptr = NULL, *temp, *temp2 = NULL;  
+    ptr = (struct node *) malloc (sizeof(struct node));  
+
+    printf("\nEnter element value:");  
+    scanf("%d",&item1);  
+    ptr->data = item1;  
+    printf("\nEnter the location before which you want to insert: ");  
+    scanf("%d",&loc1);  
+    temp=head;  
+    for(i1=0;i1<loc1-1;i1++)  
+    {  
+        temp = temp->next;  
+        if(temp == NULL)  
+        {  
+            printf("\ncan't insert\n");  
+            return head;  
+        }  
+    }  
+    temp2 = temp -> next; 
+    temp->next = ptr;
+    temp2 -> prev = ptr;
+    ptr -> next = temp2;
+    ptr->prev = temp;
+    
+    printf("\nNode inserted\n"); 
+    return head;
+}  
+
+struct node *begin_delete(struct node *head)  
+{  
+    struct node *ptr;  
+    if(head == NULL)  
+    {  
+        printf("\nList is empty\n");  
+    }
+    else if(head->next == NULL)
+    {
+        head = NULL;
+        free(head);
+        printf("\nNode deleted from the begining ...\n"); 
+    }  
+    else   
+    {  
+        ptr = head;  
+        head = head->next;
+        head->prev = NULL;  
+        free(ptr);  
+        printf("\nNode deleted from the begining ...\n");  
+    }  
+    return head;
+}  
+
+struct node *last_delete(struct node *head)  
+{  
+    struct node *ptr1;  
+    if(head == NULL)  
+    {  
+        printf("\nlist is empty");  
+    }  
+    else if(head -> next == NULL)  
+    {  
+        head = NULL;  
+        free(head);  
+        printf("\nOnly node of the list deleted ...\n");  
+    }  
+    else  
+    {  
+        ptr1 = head;   
+        while(ptr1->next != NULL)  
+        {   
+            ptr1 = ptr1 ->next;  
+        }  
+        ptr1->prev->next = NULL;  
+        free(ptr1);  
+        printf("\nDeleted Node from the last ...\n");  
+    } 
+    return head;
+}  
+
+struct node *random_delete(struct node *head)  
+{  
+    struct node *ptr;  
+    int loc,i;    
+    printf("\nEnter the location of the node after which you want to perform deletion: \n");  
+    scanf("%d",&loc);
+    if(head == NULL)  
+    {  
+        printf("\nlist is empty");  
+    }  
+    else if(head -> next == NULL)  
+    {  
+        head = NULL;  
+        free(head);  
+        printf("\nOnly node of the list deleted ...\n");  
+    }
+    else
+    {    
+       ptr=head;  
+       for(i=0;i<loc;i++)  
+       {  
+           ptr = ptr->next;  
+           if(ptr == NULL)  
+           {  
+               printf("\nCan't delete");  
+               return head;  
+           }  
+       }  
+       ptr->prev->next = ptr->next;
+       ptr->next->prev = ptr->prev;
+       free(ptr);  
+       printf("\nDeleted node %d ",loc+1);
+    }
+    return head;
+}  
+
+struct node *specific_val_delete(struct node *head)
+{
+    // struct node *ptr;
+    struct node *temp;
+    int val;
+    printf("Please enter a value: ");
+    scanf("%d",&val);
+    temp = head;
+    while(temp->data != val && temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    if(temp->data != val)
+    {
+        printf("Element not found to delete\n");
+    } 
+    else if(temp->next == NULL)
+    {
+        printf("%d is the last node....please use last_delete() function to delete %d\n",val,val); 
+    }
+   /* else if(temp->next->next == NULL)
+    {
+        temp->next = NULL;
+        printf("Node deleted\n");
+    } */
+    else
+    {
+        /*ptr = temp->next;
+        temp->next = ptr->next;
+        ptr->next->prev = temp;
+        free(ptr);
+        printf("Node deleted\n");*/
+        
+        temp->prev->next = temp->next;
+        temp->next->prev = temp->prev;
+        free(temp);
+        printf("\nNode deleted\n");
+    }
+    return head;
+}
+
+struct node *search(struct node *head)  
+{  
+    struct node *ptr;  
+    int item,i=0,flag;  
+    ptr = head;   
+    if(ptr == NULL)  
+    {  
+        printf("\nEmpty List\n");  
+    }  
+    else  
+    {   
+        printf("\nEnter item which you want to search:\n");   
+        scanf("%d",&item);  
+        while (ptr!=NULL)  
+        {  
+            if(ptr->data == item)  
+            {  
+                printf("item found at location %d \n",i+1);  
+                flag=0;
+                return head;  
+            }   
+            else  
+            {  
+                flag=1;  
+            }  
+            i++;  
+            ptr = ptr -> next;  
+        }  
+        if(flag==1)  
+        {  
+            printf("Item not found\n");  
+        }  
+    }
+    return head;
+}  
+  
+struct node *display(struct node *head)  
+{  
+    struct node *ptr;  
+    ptr = head;   
+    if(ptr == NULL)  
+    {  
+        printf("Nothing to print");  
+    }  
+    else  
+    {  
+        printf("\nprinting values . . . . .\n");   
+        while (ptr!=NULL)  
+        {  
+            printf("%d\n",ptr->data);  
+            ptr = ptr -> next;  
+        }  
+    }
+    return head;
+}   
+
+int main()
+{
+    struct node *head = NULL;  
+    int choice;  
+    while(choice != 11)   
+    {  
+        printf("Choose one option from the following list ...\n");  
+        printf("\n1.Insert in begining\n2.Insert at last\n3.Insert after random location\n4.Insert before random location\n5.Delete from Beginning\n6.Delete from last\n7.Delete node after a random location\n8.Delete node with a specified value\n9.Search for an element\n10.Show\n11.Exit\n"); 
+               
+        printf("\nEnter your choice:\n");         
+        scanf("\n%d",&choice);  
+        switch(choice)  
+        {  
+            case 1:  
+                    head = beginsert(head);      
+                    break;  
+            case 2:  
+                    head = lastinsert(head);         
+                    break;  
+            case 3:  
+                    head = randominsert(head);       
+                    break;
+            case 4: 
+                    head = randominsert1(head);
+                    break;  
+            case 5:  
+                    head = begin_delete(head);       
+                    break;  
+            case 6:  
+                    head = last_delete(head);        
+                    break;  
+            case 7:
+                    head = random_delete(head);  
+                    break;      
+            case 8:  
+                    head = specific_val_delete(head);      
+                    break;  
+            case 9:  
+                    head = search(head);      
+                    break;  
+            case 10:  
+                    head = display(head);  
+                    break; 
+            case 11: 
+                    exit(0);
+                    break;
+            default:  
+                    printf("Please enter valid choice..");  
+        }  
+    }  
+    
+    return 0;
+}
