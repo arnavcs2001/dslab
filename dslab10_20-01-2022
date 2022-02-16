@@ -1,0 +1,212 @@
+// Data Structures
+// Binary Search Tree (BST) 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct BST
+{
+    int data;
+    struct BST *left;
+    struct BST* right; 
+};
+
+struct BST *create()
+{
+    struct BST *temp;
+    printf("Enter data: ");
+    temp = (struct BST *)malloc(sizeof(struct BST));
+    scanf("%d",&temp->data);
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+struct BST *insert(struct BST *root, struct BST *temp)
+{
+    if(temp->data < root->data)
+    {
+        if(root->left != NULL)
+        {
+            root->left = insert(root->left,temp);
+        }
+        else
+        {
+            root->left = temp;
+        }
+    }
+    if(temp->data > root->data)
+    {
+        if(root->right != NULL)
+        {
+            root->right = insert(root->right,temp);
+        }
+        else
+        {
+            root->right = temp;
+        }
+    }
+    return root;
+}
+
+void inorder(struct BST *root)
+{
+    if(root != NULL)
+    {
+        inorder(root->left);
+        printf("%d ",root->data);
+        inorder(root->right);
+    }
+}
+
+void postorder(struct BST *root)
+{
+    if(root != NULL)
+    {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ",root->data);
+    }
+}
+
+void preorder(struct BST *root)
+{
+    if(root != NULL)
+    {
+        printf("%d ",root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+void search(struct BST *node, int data)
+{
+    if(node == NULL)
+    {
+        printf("Value not found\n");
+        return;
+    }
+    if(node->data == data)
+    {
+        printf("Value found\n");
+        return;
+    }
+    if(data < node->data)
+    {
+        search(node->left,data);
+    }
+    else
+    {
+        search(node->right,data);
+    }
+}
+
+struct BST* find_minimum(struct BST *root)
+{
+    if(root == NULL)
+    {
+        return NULL;
+    }
+    else if(root->left != NULL) // node with minimum value will have no left child
+    {
+         return find_minimum(root->left); // left most element will be minimum
+    }
+    return root;
+}
+
+struct BST *delete1(struct BST *root, int data)
+{
+    if(root == NULL)
+    {
+        return root;
+    }
+    else if(data < root->data)
+    {
+        root->left = delete1(root->left,data);
+    }
+    else if(data > root->data)
+    {
+         root->right = delete1(root->right,data);
+    }
+    else
+    {
+        // Case 1: No child
+        if(root->left == NULL && root->right == NULL)
+        {
+            free(root);
+            root = NULL;
+        }
+        // Case 2: One child
+        else if(root->left == NULL)
+        {
+            struct BST *temp = root;
+            root = root->right;
+            free(temp);
+        }
+        else if(root->right == NULL)
+        {
+            struct BST *temp = root;
+            root = root->left;
+            free(temp);
+        }
+        // Case 3: 2 children
+        else
+        {
+            struct BST *temp = find_minimum(root->right);
+            root->data = temp->data;
+            root->right = delete1(root->right,temp->data); 
+        }
+    }
+    return root;
+}
+
+int main()
+{
+    int data,data1;
+    int choice;
+    struct BST *root = NULL, *temp;
+    while(choice != 7)
+    {
+        printf("\nPlease select one option:\n1.Insert\n2.Search\n3.Delete\n4.Inorder display\n5.Postorder display\n6.Preorder display\n7.Exit\n"); 
+        printf("\nEnter your choice: ");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: temp = create();
+                    if(root == NULL)
+                    {
+                        root = temp;
+                    }
+                    else
+                    {
+                        root = insert(root,temp);
+                    }
+                    break;
+              
+            case 2: printf("Please enter the value you want to search: ");
+                    scanf("%d",&data);
+                    search(root,data);
+                    break;
+
+            case 3: printf("Please enter the value you want to delete: ");
+                    scanf("%d",&data1);
+                    root = delete1(root,data1);
+                    break;
+
+            case 4: inorder(root);
+                    break;
+                    
+            case 5: postorder(root);
+                    break;
+ 
+            case 6: preorder(root);
+                    break;
+
+            case 7: exit(0);
+                    break;
+
+            default: printf("Invalid choice!! Please try again\n");
+        }
+    }
+    
+    return 0;
+}
